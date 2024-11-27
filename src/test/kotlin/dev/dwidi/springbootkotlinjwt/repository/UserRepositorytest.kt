@@ -10,13 +10,13 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
 import org.springframework.dao.DuplicateKeyException
+import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.index.Index
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.LocalDateTime
-import org.springframework.data.domain.Sort
-import org.springframework.data.mongodb.core.index.Index
 
 @Testcontainers
 @DataMongoTest
@@ -156,7 +156,6 @@ class UserRepositoryTest {
 
     @Test
     fun `should throw exception when creating user with existing email`() {
-        // Create unique index
         mongoTemplate.indexOps(User::class.java)
             .ensureIndex(Index().on("email", Sort.Direction.ASC).unique())
 
