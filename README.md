@@ -28,8 +28,8 @@ This project demonstrates a **Spring Boot** application built with **Kotlin** fo
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/springboot-kotlin-jwt.git
-cd springboot-kotlin-jwt
+git@github.com:dwididit/springboot-kotlin-jwt.git
+cd springboot-kotlin-jwt/
 ```
 
 ### Build and Run
