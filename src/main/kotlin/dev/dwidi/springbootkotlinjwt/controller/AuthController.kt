@@ -8,7 +8,6 @@ import dev.dwidi.springbootkotlinjwt.dto.auth.LoginResponseDTO
 import dev.dwidi.springbootkotlinjwt.dto.user.UserRequestDTO
 import dev.dwidi.springbootkotlinjwt.dto.user.UserResponseDTO
 import dev.dwidi.springbootkotlinjwt.service.UserService
-import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
 
