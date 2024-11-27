@@ -1,5 +1,5 @@
 package dev.dwidi.springbootkotlinjwt.dto.auth
 
-class LogoutRequestDTO(
+class AuthRequestDTO(
     val authHeader: String
 )

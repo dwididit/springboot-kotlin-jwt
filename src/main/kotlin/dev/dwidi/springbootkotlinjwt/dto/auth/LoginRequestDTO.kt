@@ -1,4 +1,6 @@
 package dev.dwidi.springbootkotlinjwt.dto.auth
 
-class LoginRequestDTO {
-}
+data class LoginRequestDTO(
+    val email: String,
+    val password: String
+)

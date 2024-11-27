@@ -1,4 +1,7 @@
 package dev.dwidi.springbootkotlinjwt.dto.user
 
-class UserSearchCriteria {
-}
+data class UserSearchCriteria(
+    val email: String? = null,
+    val firstName: String? = null,
+    val lastName: String? = null
+)
