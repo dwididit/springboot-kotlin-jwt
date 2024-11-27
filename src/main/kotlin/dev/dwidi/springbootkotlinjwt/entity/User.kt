@@ -26,7 +26,7 @@ data class User(
 
     val isVerified: Boolean = true,
 
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: LocalDateTime,
 
-    val updatedAt: LocalDateTime = LocalDateTime.now(),
+    val updatedAt: LocalDateTime
 )
