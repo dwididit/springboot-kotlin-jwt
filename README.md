@@ -2,7 +2,6 @@
 
 This project demonstrates a **Spring Boot** application built with **Kotlin** for JWT-based authentication and authorization. It uses **MongoDB** for data persistence and integrates Swagger for API documentation.
 
----
 
 ## Features
 
@@ -12,7 +11,6 @@ This project demonstrates a **Spring Boot** application built with **Kotlin** fo
 - **Kotlin**: Concise and modern programming language support.
 - **Spring Security**: Implements robust security mechanisms.
 
----
 
 ## Requirements
 
@@ -21,7 +19,6 @@ This project demonstrates a **Spring Boot** application built with **Kotlin** fo
 - **Maven**: Version 3.6+
 - **MongoDB**: Running instance for data storage
 
----
 
 ## Getting Started
 
@@ -43,5 +40,5 @@ cd springboot-kotlin-jwt/
     ```
 3. Swagger UI
     ```bash
-    Access Swagger UI: Navigate to http://localhost:9090/swagger-ui.html for API documentation.
+    Access Swagger UI: Navigate to http://localhost:9090/swagger-ui.html
     ```
