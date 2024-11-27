@@ -5,7 +5,6 @@ import dev.dwidi.springbootkotlinjwt.dto.user.UserResponseDTO
 import dev.dwidi.springbootkotlinjwt.dto.user.UserSearchCriteria
 import dev.dwidi.springbootkotlinjwt.dto.user.UserUpdateRequestDTO
 import dev.dwidi.springbootkotlinjwt.service.UserService
-import lombok.extern.slf4j.Slf4j
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/users")
-@Slf4j
 class UserController(
     private val userService: UserService
 ) {
