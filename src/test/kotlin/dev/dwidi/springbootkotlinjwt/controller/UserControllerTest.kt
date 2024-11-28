@@ -6,6 +6,7 @@ import dev.dwidi.springbootkotlinjwt.entity.User
 import dev.dwidi.springbootkotlinjwt.enums.Role
 import dev.dwidi.springbootkotlinjwt.repository.RefreshTokenRepository
 import dev.dwidi.springbootkotlinjwt.repository.UserRepository
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,6 +38,7 @@ class UserControllerTest {
         private val mongoDBContainer = MongoDBContainer("mongo:6.0")
             .apply {
                 withExposedPorts(27017)
+                withStartupTimeout(java.time.Duration.ofSeconds(60))
                 start()
             }
 
@@ -196,10 +198,11 @@ class UserControllerTest {
             .andExpect(jsonPath("$.data.email").value("john.updated@example.com"))
 
         // Verify in database
-        val updatedUser = userRepository.findById(savedUser.id!!).orElse(null)
-        assert(updatedUser.lastName == "Updated")
-        assert(updatedUser.email == "john.updated@example.com")
-        assert(passwordEncoder.matches("newpassword", updatedUser.password))
+        val updatedUser = userRepository.findById(savedUser.id).orElse(null)
+        Assertions.assertNotNull(updatedUser)
+        Assertions.assertEquals("Updated", updatedUser.lastName)
+        Assertions.assertEquals("john.updated@example.com", updatedUser.email)
+        Assertions.assertTrue(passwordEncoder.matches("newpassword", updatedUser.password))
     }
 
     @Test
@@ -227,7 +230,7 @@ class UserControllerTest {
             .andExpect(jsonPath("$.message").value("User successfully deleted"))
 
         // Verify in database
-        assert(!userRepository.existsById(savedUser.id!!))
+        assert(!userRepository.existsById(savedUser.id))
     }
 
     @Test

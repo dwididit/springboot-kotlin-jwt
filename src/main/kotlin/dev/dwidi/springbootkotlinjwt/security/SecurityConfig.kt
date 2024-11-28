@@ -52,11 +52,11 @@ class SecurityConfig(
             }
             .exceptionHandling { exceptionHandling ->
                 exceptionHandling
-                    .authenticationEntryPoint { request, response, authException ->
+                    .authenticationEntryPoint { _, response, authException ->
                         logger.error("Unauthorized error: ${authException.message}")
                         response.sendError(HttpStatus.UNAUTHORIZED.value(), "Unauthorized")
                     }
-                    .accessDeniedHandler { request, response, accessDeniedException ->
+                    .accessDeniedHandler { _, response, accessDeniedException ->
                         logger.error("Access denied error: ${accessDeniedException.message}")
                         response.sendError(HttpStatus.FORBIDDEN.value(), "Access denied")
                     }

@@ -188,7 +188,7 @@ class UserServiceImpl(
                     data = null
                 )
 
-            val authentication = authenticationManager.authenticate(
+            authenticationManager.authenticate(
                 UsernamePasswordAuthenticationToken(
                     request.email,
                     request.password

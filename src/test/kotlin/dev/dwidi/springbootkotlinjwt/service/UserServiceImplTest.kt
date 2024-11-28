@@ -33,6 +33,7 @@ class UserServiceImplTest {
         private val mongoDBContainer = MongoDBContainer("mongo:6.0")
             .apply {
                 withExposedPorts(27017)
+                withStartupTimeout(java.time.Duration.ofSeconds(60))
                 start()
             }
 
@@ -149,7 +150,7 @@ class UserServiceImplTest {
             createdAt = now,
             updatedAt = now
         )
-        userRepository.save(user)
+        val savedUser = userRepository.save(user)
 
         val request = LoginRequestDTO(
             email = "test@example.com",
@@ -166,7 +167,7 @@ class UserServiceImplTest {
         assertNotNull(result.data?.refreshToken)
 
         // Verify refresh token was saved
-        val savedRefreshTokens = refreshTokenRepository.findByUserId(user.id!!)
+        val savedRefreshTokens = refreshTokenRepository.findByUserId(savedUser.id)
         assertTrue(savedRefreshTokens.isNotEmpty())
     }
 
@@ -195,7 +196,7 @@ class UserServiceImplTest {
         )
 
         // When
-        val result = userService.updateUser(savedUser.id!!, request)
+        val result = userService.updateUser(savedUser.id, request)
 
         // Then
         assertEquals(HttpStatus.OK.value(), result.statusCode)
@@ -203,7 +204,7 @@ class UserServiceImplTest {
         assertNotNull(result.data)
 
         // Verify changes in database
-        val updatedUser = userRepository.findById(savedUser.id!!).orElse(null)
+        val updatedUser = userRepository.findById(savedUser.id).orElse(null)
         assertNotNull(updatedUser)
         assertEquals(request.lastName, updatedUser.lastName)
         assertEquals(request.email, updatedUser.email)
@@ -227,14 +228,14 @@ class UserServiceImplTest {
         val savedUser = userRepository.save(user)
 
         // When
-        val result = userService.deleteUser(savedUser.id!!)
+        val result = userService.deleteUser(savedUser.id)
 
         // Then
         assertEquals(HttpStatus.OK.value(), result.statusCode)
         assertEquals("User successfully deleted", result.message)
 
         // Verify user was actually deleted from database
-        assertFalse(userRepository.existsById(savedUser.id!!))
+        assertFalse(userRepository.existsById(savedUser.id))
     }
 
     @Test
@@ -318,7 +319,7 @@ class UserServiceImplTest {
             createdAt = now,
             updatedAt = now
         )
-        userRepository.save(userToUpdate)
+        val savedUser = userRepository.save(userToUpdate)
 
         // Try to update second user with first user's email
         val request = UserUpdateRequestDTO(
@@ -330,7 +331,7 @@ class UserServiceImplTest {
         )
 
         // When
-        val result = userService.updateUser(userToUpdate.id!!, request)
+        val result = userService.updateUser(savedUser.id, request)
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST.value(), result.statusCode)
@@ -378,7 +379,7 @@ class UserServiceImplTest {
         )
 
         // When
-        val result = userService.updateUser(savedUser.id!!, request)
+        val result = userService.updateUser(savedUser.id, request)
 
         // Then
         assertEquals(HttpStatus.OK.value(), result.statusCode)
@@ -392,7 +393,7 @@ class UserServiceImplTest {
         assertEquals(savedUser.phoneNumber, result.data?.phoneNumber)
 
         // Verify in database
-        val updatedUser = userRepository.findById(savedUser.id!!).orElse(null)
+        val updatedUser = userRepository.findById(savedUser.id).orElse(null)
         assertNotNull(updatedUser)
         assertEquals("Johnny", updatedUser.firstName)
         assertEquals("Smith", updatedUser.lastName)
@@ -425,7 +426,7 @@ class UserServiceImplTest {
         )
 
         // When
-        val result = userService.updateUser(savedUser.id!!, request)
+        val result = userService.updateUser(savedUser.id, request)
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST.value(), result.statusCode)
@@ -433,7 +434,7 @@ class UserServiceImplTest {
         assertNull(result.data)
 
         // Verify user was not changed in database
-        val unchangedUser = userRepository.findById(savedUser.id!!).orElse(null)
+        val unchangedUser = userRepository.findById(savedUser.id).orElse(null)
         assertNotNull(unchangedUser)
         assertEquals(savedUser.firstName, unchangedUser.firstName)
         assertEquals(savedUser.lastName, unchangedUser.lastName)
@@ -466,7 +467,7 @@ class UserServiceImplTest {
         )
 
         // When
-        val result = userService.updateUser(savedUser.id!!, request)
+        val result = userService.updateUser(savedUser.id, request)
 
         // Then
         assertEquals(HttpStatus.BAD_REQUEST.value(), result.statusCode)
@@ -474,7 +475,7 @@ class UserServiceImplTest {
         assertNull(result.data)
 
         // Verify user was not changed in database
-        val unchangedUser = userRepository.findById(savedUser.id!!).orElse(null)
+        val unchangedUser = userRepository.findById(savedUser.id).orElse(null)
         assertNotNull(unchangedUser)
         assertEquals(user.firstName, unchangedUser.firstName)
         assertEquals(user.lastName, unchangedUser.lastName)

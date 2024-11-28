@@ -13,6 +13,8 @@ import org.springframework.dao.DuplicateKeyException
 import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.index.Index
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.MongoDBContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -31,7 +33,17 @@ class UserRepositoryTest {
     companion object {
         @Container
         private val mongoDBContainer = MongoDBContainer("mongo:6.0")
-            .withExposedPorts(27017)
+            .apply {
+                withExposedPorts(27017)
+                withStartupTimeout(java.time.Duration.ofSeconds(60))
+                start()
+            }
+
+        @JvmStatic
+        @DynamicPropertySource
+        fun registerMongoProperties(registry: DynamicPropertyRegistry) {
+            registry.add("spring.data.mongodb.uri") { mongoDBContainer.replicaSetUrl }
+        }
     }
 
     @BeforeEach

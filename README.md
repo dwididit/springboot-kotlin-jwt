@@ -10,6 +10,7 @@ This project demonstrates a **Spring Boot** application built with **Kotlin** fo
 - **Swagger UI**: Easily explore and test APIs with an interactive UI.
 - **Kotlin**: Concise and modern programming language support.
 - **Spring Security**: Implements robust security mechanisms.
+- **Unit Testing with Test Container**: Integration tests use Testcontainers to provide an isolated and disposable MongoDB instance.
 
 
 ## Requirements
