@@ -36,5 +36,5 @@ cd springboot-kotlin-jwt/
    ```
 2. Swagger UI
     ```bash
-    Access Swagger UI: Navigate to http://localhost:9090/swagger-ui.html
+    Access Swagger UI: http://localhost:9090/swagger-ui.html
     ```
