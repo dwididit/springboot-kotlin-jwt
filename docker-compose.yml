@@ -1,0 +1,39 @@
+services:
+  app:
+    build: .
+    ports:
+      - "9090:9090"
+    depends_on:
+      - mongodb
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=mongodb_crud
+      - SPRING_DATA_MONGODB_USERNAME=mongodb
+      - SPRING_DATA_MONGODB_PASSWORD=mongodb
+      - SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - app-network
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongodb
+      - MONGO_INITDB_ROOT_PASSWORD=mongodb
+      - MONGO_INITDB_DATABASE=mongodb_crud
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

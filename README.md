@@ -42,3 +42,8 @@ cd springboot-kotlin-jwt/
     ```bash
     Access Swagger UI: Navigate to http://localhost:9090/swagger-ui.html
     ```
+
+### Build and Run Using Docker Compose
+```bash
+docker-compose up --build -d
+```
