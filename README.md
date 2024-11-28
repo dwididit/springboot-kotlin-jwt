@@ -30,20 +30,11 @@ cd springboot-kotlin-jwt/
 ```
 
 ### Build and Run
-1. Build the Project:
-    ```bash
-    mvn clean install
-    ```
-2. Run the Application:
-    ```bash
-    mvn spring-boot:run
-    ```
-3. Swagger UI
+1. Build and run the Project:
+   ```bash
+   docker-compose up --build -d
+   ```
+2. Swagger UI
     ```bash
     Access Swagger UI: Navigate to http://localhost:9090/swagger-ui.html
     ```
-
-### Build and Run Using Docker Compose
-```bash
-docker-compose up --build -d
-```
