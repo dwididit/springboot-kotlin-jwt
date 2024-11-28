@@ -104,6 +104,30 @@ class UserServiceImpl(
     }
 
     override fun updateUser(id: String, request: UserUpdateRequestDTO): BaseResponseDTO<UserResponseDTO> {
+        if (request.firstName == null &&
+            request.lastName == null &&
+            request.email == null &&
+            request.password == null &&
+            request.phoneNumber == null) {
+            return BaseResponseDTO(
+                statusCode = HttpStatus.BAD_REQUEST.value(),
+                message = "At least one field is required for update",
+                data = null
+            )
+        }
+
+        if ((request.firstName?.isEmpty() == true) ||
+            (request.lastName?.isEmpty() == true) ||
+            (request.email?.isEmpty() == true) ||
+            (request.password?.isEmpty() == true) ||
+            (request.phoneNumber?.isEmpty() == true)) {
+            return BaseResponseDTO(
+                statusCode = HttpStatus.BAD_REQUEST.value(),
+                message = "Invalid update data: Fields cannot be empty",
+                data = null
+            )
+        }
+
         val existingUser = userRepository.findById(id).orElse(null)
             ?: return BaseResponseDTO(
                 statusCode = HttpStatus.NOT_FOUND.value(),
@@ -111,7 +135,8 @@ class UserServiceImpl(
                 data = null
             )
 
-        if (request.email != existingUser.email &&
+        if (request.email != null &&
+            request.email != existingUser.email &&
             userRepository.existsUserByEmail(request.email)) {
             return BaseResponseDTO(
                 statusCode = HttpStatus.BAD_REQUEST.value(),
@@ -121,17 +146,18 @@ class UserServiceImpl(
         }
 
         val updatedUser = existingUser.copy(
-            firstName = request.firstName,
-            lastName = request.lastName,
-            email = request.email,
-            phoneNumber = request.phoneNumber,
+            firstName = request.firstName ?: existingUser.firstName,
+            lastName = request.lastName ?: existingUser.lastName,
+            email = request.email ?: existingUser.email,
+            password = if (request.password != null) passwordEncoder.encode(request.password) else existingUser.password,
+            phoneNumber = request.phoneNumber ?: existingUser.phoneNumber,
             updatedAt = LocalDateTime.now()
         )
 
         val savedUser = userRepository.save(updatedUser)
         return BaseResponseDTO(
             statusCode = HttpStatus.OK.value(),
-            message = "User successfully update",
+            message = "User successfully updated",
             data = savedUser.toResponseDTO()
         )
     }
